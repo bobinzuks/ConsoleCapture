@@ -1,0 +1,176 @@
+{
+  "name": "ConsoleCapture - Full Stack",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18",
+      "nodeGypDependencies": true,
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "eamodio.gitlens",
+        "christian-kohler.npm-intellisense",
+        "ms-vscode.vscode-typescript-next",
+        "usernamehw.errorlens",
+        "yzhang.markdown-all-in-one",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "rangav.vscode-thunder-client",
+        "streetsidesoftware.code-spell-checker",
+        "gruntfuggly.todo-tree"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "eslint.workingDirectories": [
+          {"mode": "auto"}
+        ],
+        "files.eol": "\n",
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[markdown]": {
+          "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+        }
+      }
+    }
+  },
+
+  "forwardPorts": [
+    3000,
+    4000,
+    5432,
+    6379,
+    9200,
+    7700,
+    9000,
+    9001
+  ],
+
+  "portsAttributes": {
+    "3000": {
+      "label": "Backend API",
+      "onAutoForward": "notify",
+      "protocol": "http"
+    },
+    "4000": {
+      "label": "MCP Cloud Server",
+      "onAutoForward": "silent",
+      "protocol": "http"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "silent"
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "silent"
+    },
+    "9200": {
+      "label": "Elasticsearch",
+      "onAutoForward": "silent",
+      "protocol": "http"
+    },
+    "7700": {
+      "label": "MeiliSearch",
+      "onAutoForward": "silent",
+      "protocol": "http"
+    },
+    "9000": {
+      "label": "MinIO API",
+      "onAutoForward": "silent",
+      "protocol": "http"
+    },
+    "9001": {
+      "label": "MinIO Console",
+      "onAutoForward": "openBrowser",
+      "protocol": "http"
+    }
+  },
+
+  "onCreateCommand": "npm install",
+  "updateContentCommand": "npm install",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postAttachCommand": "echo '🚀 ConsoleCapture development environment ready!'",
+
+  "remoteEnv": {
+    "NODE_ENV": "development",
+    "DATABASE_URL": "postgresql://postgres:password@postgres:5432/console_capture",
+    "DATABASE_HOST": "postgres",
+    "DATABASE_PORT": "5432",
+    "DATABASE_NAME": "console_capture",
+    "DATABASE_USER": "postgres",
+    "DATABASE_PASSWORD": "password",
+    "DATABASE_SSL": "false",
+    "REDIS_URL": "redis://redis:6379",
+    "REDIS_HOST": "redis",
+    "REDIS_PORT": "6379",
+    "ELASTICSEARCH_NODE": "http://elasticsearch:9200",
+    "MEILISEARCH_HOST": "http://meilisearch:7700",
+    "S3_ENDPOINT": "http://minio:9000",
+    "S3_BUCKET_NAME": "console-capture-recordings",
+    "AWS_ACCESS_KEY_ID": "minioadmin",
+    "AWS_SECRET_ACCESS_KEY": "minioadmin",
+    "PORT": "3000",
+    "API_URL": "http://localhost:3000",
+    "FRONTEND_URL": "http://localhost:5173",
+    "CORS_ORIGIN": "http://localhost:5173,http://localhost:3000"
+  },
+
+  "containerEnv": {
+    "MEILISEARCH_API_KEY": "${localEnv:MEILISEARCH_API_KEY:masterKey}",
+    "JWT_SECRET": "${localEnv:JWT_SECRET:your-super-secret-jwt-key-change-this-in-production}",
+    "JWT_REFRESH_SECRET": "${localEnv:JWT_REFRESH_SECRET:your-refresh-secret-change-this}",
+    "SESSION_SECRET": "${localEnv:SESSION_SECRET:your-session-secret-change-this}",
+    "STRIPE_SECRET_KEY": "${localEnv:STRIPE_SECRET_KEY}",
+    "STRIPE_PUBLISHABLE_KEY": "${localEnv:STRIPE_PUBLISHABLE_KEY}",
+    "GOOGLE_CLIENT_ID": "${localEnv:GOOGLE_CLIENT_ID}",
+    "GOOGLE_CLIENT_SECRET": "${localEnv:GOOGLE_CLIENT_SECRET}"
+  },
+
+  "waitFor": "postCreateCommand",
+
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ]
+}

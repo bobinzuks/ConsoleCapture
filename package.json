@@ -1,0 +1,54 @@
+{
+  "name": "console-capture-monorepo",
+  "version": "1.0.0",
+  "description": "ConsoleCapture - Enterprise Console Recording Platform with MCP Integration",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "test:e2e": "turbo run test:e2e",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "typecheck": "turbo run typecheck",
+    "db:migrate": "cd packages/backend && npm run db:migrate",
+    "db:seed": "cd packages/backend && npm run db:seed",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/console-capture"
+  },
+  "keywords": [
+    "console-capture",
+    "terminal-recording",
+    "devops",
+    "mcp",
+    "model-context-protocol",
+    "chrome-extension",
+    "developer-tools"
+  ],
+  "author": "ConsoleCapture Team",
+  "license": "MIT"
+}
